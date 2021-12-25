@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import getInitialData from "./initial-data";
 import { reorderList } from "./reorder";
 import { styled } from "stitches.config";
 import {
@@ -41,7 +40,7 @@ const FilterBar = styled("div", {
   padding: "$1",
 });
 
-function Item({ provided, item, style, isDragging }) {
+function Item({ provided, item, style, isDragging }: any) {
   return (
     <ListCard
       ref={provided.innerRef}
@@ -59,7 +58,7 @@ function Item({ provided, item, style, isDragging }) {
   );
 }
 
-const ItemList = React.memo(function ItemList({ column, index }) {
+const ItemList = React.memo(function ItemList({ column, index }: any) {
   return (
     <Droppable
       droppableId={column.id}
@@ -116,7 +115,7 @@ const ListHeader = styled("div", {
   position: "relative",
 });
 
-const Column = React.memo(function Column({ column, index }) {
+const Column = React.memo(function Column({ column, index }: any) {
   return (
     <Draggable draggableId={column.id} index={index}>
       {(provided) => (

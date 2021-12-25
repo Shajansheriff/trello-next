@@ -20,7 +20,8 @@
       "@molecules": ["components/molecules"],
       "@organisms": ["components/organisms"],
       "@templates": ["components/templates"]
-    }
+    },
+    "noImplicitAny": false,
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages", "components"],
   "exclude": ["node_modules"]
