@@ -4,54 +4,62 @@ import { FixedSizeList, areEqual } from "react-window";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import getInitialData from "./initial-data";
 import { reorderList } from "./reorder";
+import { styled } from "stitches.config";
 
-function getStyle({ draggableStyle, virtualStyle, isDragging }) {
-  // If you don't want any spacing between your items
-  // then you could just return this.
-  // I do a little bit of magic to have some nice visual space
-  // between the row items
-  const combined = {
-    ...virtualStyle,
-    ...draggableStyle,
-  };
+const BoardMain = styled("div", {
+  flexGrow: 1,
+  height: "100%",
+  flexDirection: "column",
+  position: "relative",
+  display: "flex",
+});
 
-  // Being lazy: this is defined in our css file
-  const grid = 8;
+const Columns = styled("div", {
+  bottom: 0,
+  left: 0,
+  marginBottom: "8px",
+  overflowX: "auto",
+  overflowY: "hidden",
+  paddingBottom: "8px",
+  position: "relative",
+  right: 0,
+  top: 0,
+  userSelect: "none",
+  whiteSpace: "nowrap",
+});
 
-  // when dragging we want to use the draggable style for placement, otherwise use the virtual style
-  const result = {
-    ...combined,
-    height: isDragging ? combined.height : combined.height - grid,
-    left: isDragging ? combined.left : combined.left + grid,
-    width: isDragging
-      ? draggableStyle.width
-      : `calc(${combined.width} - ${grid * 2}px)`,
-    marginBottom: grid,
-  };
+const FilterBar = styled("div", {
+  height: "auto",
+  padding: "$1",
+});
 
-  return result;
-}
+const ListCard = styled("div", {
+  backgroundColor: "#fff",
+  borderRadius: "3px",
+  boxShadow: "0 1px 0 #091e4240",
+  cursor: "pointer",
+  display: "block",
+  marginBottom: "8px",
+  maxWidth: "300px",
+  minHeight: "20px",
+  position: "relative",
+  textDecoration: "none",
+  zIndex: 0,
+});
 
 function Item({ provided, item, style, isDragging }) {
   return (
-    <div
+    <ListCard
+      ref={provided.innerRef}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
-      ref={provided.innerRef}
-      style={getStyle({
-        draggableStyle: provided.draggableProps.style,
-        virtualStyle: style,
-        isDragging,
-      })}
       className={`item ${isDragging ? "is-dragging" : ""}`}
     >
       {item.text}
-    </div>
+    </ListCard>
   );
 }
 
-// Recommended react-window performance optimisation: memoize the row render function
-// Things are still pretty fast without this, but I am a sucker for making things faster
 const Row = React.memo(function Row(props) {
   const { data: items, index, style } = props;
   const item = items[index];
@@ -69,23 +77,9 @@ const Row = React.memo(function Row(props) {
 }, areEqual);
 
 const ItemList = React.memo(function ItemList({ column, index }) {
-  // There is an issue I have noticed with react-window that when reordered
-  // react-window sets the scroll back to 0 but does not update the UI
-  // I should raise an issue for this.
-  // As a work around I am resetting the scroll to 0
-  // on any list that changes it's index
-  const listRef = useRef();
-  useLayoutEffect(() => {
-    const list = listRef.current;
-    if (list) {
-      list.scrollTo(0);
-    }
-  }, [index]);
-
   return (
     <Droppable
       droppableId={column.id}
-      mode="virtual"
       renderClone={(provided, snapshot, rubric) => (
         <Item
           provided={provided}
@@ -94,53 +88,81 @@ const ItemList = React.memo(function ItemList({ column, index }) {
         />
       )}
     >
-      {(provided, snapshot) => {
-        // Add an extra item to our list to make space for a dragging item
-        // Usually the DroppableProvided.placeholder does this, but that won't
-        // work in a virtual list
-        const itemCount = snapshot.isUsingPlaceholder
-          ? column.items.length + 1
-          : column.items.length;
-
+      {(dropProvided) => {
         return (
-          <FixedSizeList
-            height={500}
-            itemCount={itemCount}
-            itemSize={80}
-            width={300}
-            outerRef={provided.innerRef}
-            itemData={column.items}
-            className="task-list"
-            ref={listRef}
-          >
-            {Row}
-          </FixedSizeList>
+          <ListCards ref={dropProvided.innerRef}>
+            {column.items.map((item, index) => (
+              <Draggable draggableId={item.id} index={index} key={item.id}>
+                {(provided) => <Item provided={provided} item={item} />}
+              </Draggable>
+            ))}
+            {dropProvided.placeholder}
+          </ListCards>
         );
       }}
     </Droppable>
   );
 });
 
+const ColumnWrapper = styled("div", {
+  height: "100%",
+  width: "272px",
+  display: "inline-block",
+  boxSizing: "border-box",
+  margin: "0 4px",
+  "&:first-child": {
+    marginLeft: "12px",
+  },
+});
+
+const List = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+  backgroundColor: "#ebecf0",
+});
+
+const ListHeader = styled("div", {
+  flex: "0 0 auto",
+  minHeight: "20px",
+  padding: "10px 8px",
+  position: "relative",
+});
+
+const ListCards = styled("div", {
+  flex: "1 1 auto",
+  margin: "0 4px",
+  overflowX: "hidden",
+  overflowY: "auto",
+  padding: "0 4px",
+  minHeight: 0,
+  zIndex: 1,
+});
+
 const Column = React.memo(function Column({ column, index }) {
   return (
     <Draggable draggableId={column.id} index={index}>
       {(provided) => (
-        <div
-          className="column"
-          {...provided.draggableProps}
+        <ColumnWrapper
+          className="column-wrapper"
           ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
         >
-          <h3 className="column-title" {...provided.dragHandleProps}>
-            {column.title}
-          </h3>
-          <ItemList column={column} index={index} />
-        </div>
+          <List>
+            <ListHeader>
+              <h3 className="column-title">{column.title}</h3>
+            </ListHeader>
+            <ListCards>
+              <ItemList column={column} index={index} />
+            </ListCards>
+          </List>
+        </ColumnWrapper>
       )}
     </Draggable>
   );
 });
 
-export const Board = () => {
+export default function () {
   const [state, setState] = useState(() => getInitialData());
 
   function onDragEnd(result) {
@@ -221,15 +243,12 @@ export const Board = () => {
   }
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <div className="app">
-        <Droppable
-          droppableId="all-droppables"
-          direction="horizontal"
-          type="column"
-        >
+    <BoardMain>
+      <FilterBar />
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="board" direction="horizontal" type="column">
           {(provided) => (
-            <div
+            <Columns
               className="columns"
               {...provided.droppableProps}
               ref={provided.innerRef}
@@ -242,10 +261,10 @@ export const Board = () => {
                 />
               ))}
               {provided.placeholder}
-            </div>
+            </Columns>
           )}
         </Droppable>
-      </div>
-    </DragDropContext>
+      </DragDropContext>
+    </BoardMain>
   );
-};
+}

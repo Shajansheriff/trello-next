@@ -9,7 +9,6 @@ const StyledAvatar = styled(AvatarPrimitive.Root, {
   verticalAlign: 'middle',
   overflow: 'hidden',
   userSelect: 'none',
-  
   borderRadius: '100%',
   variants: {
       size: {
