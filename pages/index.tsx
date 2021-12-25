@@ -1,3 +1,5 @@
+
+import { Button } from '@atoms'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
@@ -9,7 +11,7 @@ const Home: NextPage = () => {
         <meta name="description" content="A Trello Clone app using next.js" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      Hello World!
+      <Button>Hello</Button>
     </>
   )
 }
