@@ -1,10 +1,16 @@
-// @ts-nocheck
-import React, { useState, useLayoutEffect, useRef } from "react";
-import { FixedSizeList, areEqual } from "react-window";
+import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import getInitialData from "./initial-data";
 import { reorderList } from "./reorder";
 import { styled } from "stitches.config";
+import {
+  CardDetails,
+  CardLabels,
+  ListCard,
+  ListCards,
+  CardLabelModFront,
+  CardTitle,
+} from "./card";
 
 const BoardMain = styled("div", {
   flexGrow: 1,
@@ -33,20 +39,6 @@ const FilterBar = styled("div", {
   padding: "$1",
 });
 
-const ListCard = styled("div", {
-  backgroundColor: "#fff",
-  borderRadius: "3px",
-  boxShadow: "0 1px 0 #091e4240",
-  cursor: "pointer",
-  display: "block",
-  marginBottom: "8px",
-  maxWidth: "300px",
-  minHeight: "20px",
-  position: "relative",
-  textDecoration: "none",
-  zIndex: 0,
-});
-
 function Item({ provided, item, style, isDragging }) {
   return (
     <ListCard
@@ -55,26 +47,15 @@ function Item({ provided, item, style, isDragging }) {
       {...provided.dragHandleProps}
       className={`item ${isDragging ? "is-dragging" : ""}`}
     >
-      {item.text}
+      <CardDetails>
+        <CardLabels>
+          <CardLabelModFront color="red"></CardLabelModFront>
+        </CardLabels>
+        <CardTitle>{item.text}</CardTitle>
+      </CardDetails>
     </ListCard>
   );
 }
-
-const Row = React.memo(function Row(props) {
-  const { data: items, index, style } = props;
-  const item = items[index];
-
-  // We are rendering an extra item for the placeholder
-  if (!item) {
-    return null;
-  }
-
-  return (
-    <Draggable draggableId={item.id} index={index} key={item.id}>
-      {(provided) => <Item provided={provided} item={item} style={style} />}
-    </Draggable>
-  );
-}, areEqual);
 
 const ItemList = React.memo(function ItemList({ column, index }) {
   return (
@@ -126,16 +107,6 @@ const ListHeader = styled("div", {
   minHeight: "20px",
   padding: "10px 8px",
   position: "relative",
-});
-
-const ListCards = styled("div", {
-  flex: "1 1 auto",
-  margin: "0 4px",
-  overflowX: "hidden",
-  overflowY: "auto",
-  padding: "0 4px",
-  minHeight: 0,
-  zIndex: 1,
 });
 
 const Column = React.memo(function Column({ column, index }) {
