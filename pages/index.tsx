@@ -7,13 +7,14 @@ import {FC} from "react";
 const Navbar: FC = ({ children }) => {
   return (
     <div className="min-h-40 max-h-40 overflow-hidden">
-      <div className="flex box-border"></div>
-      {children}
+      <div className="flex box-border">
+        {children}
+      </div>
     </div>
   )
 }
 
-const Anchor = styled('a', {
+const SignupLink = styled('a', {
   fontFamily: '$system',
   fontSize: '$2', 
   textDecoration: 'none',
@@ -49,7 +50,24 @@ const Anchor = styled('a', {
   }
 })
 
-const LoginButton = styled(Anchor, {
+const Anchor = styled('a', {
+  background: '0 0',
+  borderRadius: '3px',
+  color: '#FFFFFF',
+  display: 'inline-block',
+  fontWeight: 'bold',
+  lineHeight: '15px',
+  margin: '0 4px 5px 0',
+  padding: '8px',
+  textDecoration: 'none',
+  '&:hover': {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    outline: 'none',
+    color: '#FFFFFF',
+  }
+})
+
+const LoginButton = styled(SignupLink, {
   backgroundColor: 'transparent',
   background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2))',
   '&:hover': {
@@ -57,6 +75,7 @@ const LoginButton = styled(Anchor, {
   },
 
 })
+
 
 const Home: NextPage = () => {
   return (
@@ -67,10 +86,19 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar>
+          <Link href={"#"} passHref>
+            <Anchor>Home</Anchor>
+          </Link>
+          <Link href={"#"} passHref>
+            <Anchor>Tour</Anchor>
+          </Link>
+          <Link href={"#"} passHref>
+            <Anchor>Blog</Anchor>
+          </Link>
         <Link href="/">Trello</Link>
         <div className="flex justify-end grow-1 basis-100">
-          <Link href={"#"}><Anchor type="success">SignUp</Anchor></Link>
-          <Link href={"#"}><LoginButton>Login</LoginButton></Link>
+          <Link href={"#"} passHref><SignupLink type="success">SignUp</SignupLink></Link>
+          <Link href={"#"} passHref><LoginButton>Login</LoginButton></Link>
         </div>
       </Navbar>
     </>
