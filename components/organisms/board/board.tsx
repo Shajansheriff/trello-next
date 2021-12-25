@@ -32,6 +32,8 @@ const Columns = styled("div", {
   top: 0,
   userSelect: "none",
   whiteSpace: "nowrap",
+  display: "flex",
+  height: "calc(100vh - 56px)",
 });
 
 const FilterBar = styled("div", {
@@ -100,6 +102,10 @@ const List = styled("div", {
   display: "flex",
   flexDirection: "column",
   backgroundColor: "#ebecf0",
+  position: "relative",
+  boxSizing: "border-box",
+  maxHeight: "100%",
+  borderRadius: "3px",
 });
 
 const ListHeader = styled("div", {
@@ -123,9 +129,7 @@ const Column = React.memo(function Column({ column, index }) {
             <ListHeader>
               <h3 className="column-title">{column.title}</h3>
             </ListHeader>
-            <ListCards>
-              <ItemList column={column} index={index} />
-            </ListCards>
+            <ItemList column={column} index={index} />
           </List>
         </ColumnWrapper>
       )}
