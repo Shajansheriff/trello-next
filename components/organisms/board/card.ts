@@ -25,10 +25,11 @@ export const ListCard = styled("div", {
   });
 
   export const CardDetails = styled('div', {
-      overflow: 'hidder',
+      overflow: 'hidden',
       padding: '6px 8px 2px',
       position: 'relative',
       zIndex: 10,
+      display: 'block',
   })
 
   export const CardLabels = styled('div', {
@@ -66,6 +67,6 @@ export const ListCard = styled("div", {
       color: '#172b4d',
       display: 'block',
       margin: '0 0 4px',
-      overflow: 'hidder',
+      overflow: 'hidden',
       textDecoration: 'none',
   })

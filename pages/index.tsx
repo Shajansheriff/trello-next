@@ -4,7 +4,6 @@ import Link from "next/link";
 import { styled } from "stitches.config";
 import { FC, useEffect, useState } from "react";
 import { Page } from "@templates";
-import { ActivityList, Board } from "@organisms";
 import { Anchor, SignupLink, LoginButton } from "@atoms";
 import dynamic from "next/dynamic";
 const Board = dynamic(import("../components/organisms/board/board"), {
@@ -40,8 +39,26 @@ const Navbar: FC = ({ children }) => {
 
 const Home: NextPage = () => {
   const [winReady, setwinReady] = useState(false);
+  const [data, setData] = useState();
+
   useEffect(() => {
     setwinReady(true);
+    const fetchData = async () => {
+      const response = await fetch("/api/tasks", {
+        method: "POST",
+        body: JSON.stringify({
+          limit: 100,
+        }),
+      });
+
+      return response.json();
+    };
+
+    fetchData().then((data) => {
+      console.log(data);
+
+      setData(data);
+    });
   }, []);
   return (
     <Page>
@@ -53,7 +70,9 @@ const Home: NextPage = () => {
       <Page.Bar>
         <Navbar />
       </Page.Bar>
-      <Page.Content>{winReady ? <Board /> : null}</Page.Content>
+      <Page.Content>
+        {winReady && data ? <Board data={data} /> : null}
+      </Page.Content>
     </Page>
   );
 };

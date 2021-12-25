@@ -53,7 +53,7 @@ function Item({ provided, item, style, isDragging }) {
         <CardLabels>
           <CardLabelModFront color="red"></CardLabelModFront>
         </CardLabels>
-        <CardTitle>{item.text}</CardTitle>
+        <CardTitle>{item.name}</CardTitle>
       </CardDetails>
     </ListCard>
   );
@@ -106,6 +106,7 @@ const List = styled("div", {
   boxSizing: "border-box",
   maxHeight: "100%",
   borderRadius: "3px",
+  whiteSpace: "normal",
 });
 
 const ListHeader = styled("div", {
@@ -137,8 +138,8 @@ const Column = React.memo(function Column({ column, index }) {
   );
 });
 
-export default function () {
-  const [state, setState] = useState(() => getInitialData());
+export default function ({ data }) {
+  const [state, setState] = useState(data);
 
   function onDragEnd(result) {
     if (!result.destination) {
