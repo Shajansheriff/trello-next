@@ -16,7 +16,8 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@atoms": ["components/atoms"]
+      "@atoms": ["components/atoms"],
+      "@templates": ["components/templates"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages", "components"],
