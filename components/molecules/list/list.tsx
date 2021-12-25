@@ -1,1 +1,1 @@
-const List = () => null;
+export const List = () => <></>;
