@@ -4,7 +4,7 @@ import Link from "next/link";
 import { styled } from "stitches.config";
 import { FC } from "react";
 import { Page } from "@templates";
-import { ActivityList } from "@organisms";
+import { ActivityList, Board } from "@organisms";
 
 const Navbar: FC = ({ children }) => {
   return (
@@ -108,7 +108,7 @@ const Home: NextPage = () => {
         </Navbar>
       </Page.Bar>
       <Page.Content>
-        <ActivityList />
+        <Board />
       </Page.Content>
     </Page>
   );
