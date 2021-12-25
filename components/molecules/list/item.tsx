@@ -1,16 +1,9 @@
-import { Avatar, AvatarImage, AvatarFallback } from "@atoms";
 import { FC } from "react";
 import { styled } from "stitches.config";
 
-const Creator = () => (
-  <Avatar>
-    <AvatarImage
-      src="https://images.unsplash.com/photo-1511485977113-f34c92461ad9?ixlib=rb-1.2.1&w=128&h=128&dpr=2&q=80"
-      alt="Pedro Duarte"
-    />
-    <AvatarFallback delayMs={600}>JD</AvatarFallback>
-  </Avatar>
-);
+const Avatar = styled("div", {
+  display: "block",
+});
 
 const Description = styled("div", {
   display: "block",

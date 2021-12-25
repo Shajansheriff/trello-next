@@ -9,9 +9,19 @@ const StyledAvatar = styled(AvatarPrimitive.Root, {
   verticalAlign: 'middle',
   overflow: 'hidden',
   userSelect: 'none',
-  width: 45,
-  height: 45,
+  
   borderRadius: '100%',
+  variants: {
+      size: {
+          medium: {
+            width: 32,
+            height: 32,
+          }
+      }
+  },
+  defaultVariants: {
+      size: 'medium',
+  }
 });
 
 const StyledImage = styled(AvatarPrimitive.Image, {
