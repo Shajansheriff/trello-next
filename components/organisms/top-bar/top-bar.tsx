@@ -22,6 +22,9 @@ const LeftSide = styled(Side, {
   flexBasis: "100%",
   justifyContent: "flex-start",
   alignItems: "center",
+  "@mobile": {
+    display: "none",
+  },
 });
 
 const RightSide = styled(Side, {
