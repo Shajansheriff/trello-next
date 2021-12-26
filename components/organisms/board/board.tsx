@@ -9,7 +9,9 @@ import {
   ListCards,
   CardLabelModFront,
   CardTitle,
+  CardLabelText,
 } from "./card";
+import { Color, Task } from "pages/api/tasks";
 
 const BoardMain = styled("div", {
   flexGrow: 1,
@@ -40,7 +42,7 @@ const FilterBar = styled("div", {
   padding: "$1",
 });
 
-function Item({ provided, item, style, isDragging }: any) {
+function Item({ provided, item, isDragging }: any) {
   return (
     <ListCard
       ref={provided.innerRef}
@@ -49,9 +51,17 @@ function Item({ provided, item, style, isDragging }: any) {
       className={`item ${isDragging ? "is-dragging" : ""}`}
     >
       <CardDetails>
-        <CardLabels>
-          <CardLabelModFront color="red"></CardLabelModFront>
-        </CardLabels>
+        {item.labels ? (
+          <CardLabels>
+            {Object.keys(item.labels).map((color) => (
+              <CardLabelModFront
+                color={color as any}
+                key={color}
+              ></CardLabelModFront>
+            ))}
+          </CardLabels>
+        ) : null}
+
         <CardTitle>{item.name}</CardTitle>
       </CardDetails>
     </ListCard>
