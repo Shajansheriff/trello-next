@@ -2,11 +2,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import faker from "faker";
 
-interface Phase {
-  id: string;
-  name: string;
-}
-
 export type Color = "red" | "greeen" | "blue" | "yellow" | "purple";
 type Labels = Partial<Record<Color, string>>;
 export interface Task {
@@ -14,6 +9,9 @@ export interface Task {
   name: string;
   createdAt: Date;
   labels?: Labels;
+  commentsCount?: number;
+  totalSubTasksCount?: number;
+  completedSubTasksCount?: number;
 }
 
 interface Data {
@@ -23,7 +21,7 @@ interface Data {
 
 const colors: Color[] = ["red", "greeen", "blue", "yellow", "purple"];
 function getItems(count: number): Task[] {
-  return Array.from({ length: count }, (v, k) => {
+  return Array.from({ length: count }, (v, index) => {
     const colorIndex = faker.datatype.number({
       min: 0,
       max: colors.length - 1,
@@ -31,11 +29,20 @@ function getItems(count: number): Task[] {
     const color = colors[colorIndex];
     return {
       id: faker.datatype.uuid(),
-      name: faker.lorem.sentence(),
+      name: faker.random.words(faker.datatype.number({ min: 1, max: 10 })),
       createdAt: faker.date.recent(),
       labels: color && {
         [color]: faker.commerce.department(),
       },
+      commentsCount: [1, 5, 11, 15, 21, 35].includes(index)
+        ? faker.datatype.number({ min: 1, max: 7 })
+        : undefined,
+      totalSubTasksCount: [1, 4, 20, 10, 15, 35, 40].includes(index)
+        ? faker.datatype.number({ min: 3, max: 7 })
+        : undefined,
+      completedSubTasksCount: [1, 4, 20, 10, 15, 35, 40].includes(index)
+        ? faker.datatype.number({ min: 0, max: 3 })
+        : undefined,
     };
   });
 }
