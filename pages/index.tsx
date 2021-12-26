@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Page } from "@templates";
 import dynamic from "next/dynamic";
 import { TopBar } from "@organisms";
+import { Banner } from "@atoms";
+import Link from "next/link";
 const Board = dynamic(import("../components/organisms/board/board"), {
   ssr: false,
 });
@@ -40,6 +42,12 @@ const Home: NextPage = () => {
       </Head>
       <Page.Bar>
         <TopBar />
+        <Banner type={"warning"}>
+          <span>Visually collaborate with anyone, anywhere.</span>
+          <span>
+            <Link href={"#"}>Signup</Link>
+          </span>
+        </Banner>
       </Page.Bar>
       <Page.Content>
         {winReady && data ? <Board data={data} /> : null}
