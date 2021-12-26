@@ -33,7 +33,7 @@ const Columns = styled("div", {
   userSelect: "none",
   whiteSpace: "nowrap",
   display: "flex",
-  height: "calc(100vh - 56px)",
+  height: "calc(100vh - 96px)", // TODO:: remove this height and do layout changes in the parent to make column 100%;
 });
 
 const FilterBar = styled("div", {
