@@ -46,11 +46,11 @@ export const {
     },
     fontSizes: {
       1: "12px",
-      2: "13px",
-      3: "15px",
-      4: "17px",
-      5: "19px",
-      6: "21px",
+      2: "14px",
+      3: "16px",
+      4: "18px",
+      5: "20px",
+      6: "22px",
     },
     fonts: {
       system: "system-ui",
