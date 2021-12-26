@@ -1,41 +1,12 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
-import { styled } from "stitches.config";
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Page } from "@templates";
-import { Anchor, SignupLink, LoginButton } from "@atoms";
 import dynamic from "next/dynamic";
+import { TopBar } from "@organisms";
 const Board = dynamic(import("../components/organisms/board/board"), {
   ssr: false,
 });
-
-const Navbar: FC = ({ children }) => {
-  return (
-    <div className="min-h-40 max-h-40 overflow-hidden">
-      <div className="flex box-border">
-        <Link href={"#"} passHref>
-          <Anchor>Home</Anchor>
-        </Link>
-        <Link href={"#"} passHref>
-          <Anchor>Tour</Anchor>
-        </Link>
-        <Link href={"#"} passHref>
-          <Anchor>Blog</Anchor>
-        </Link>
-        <Link href="/">Trello</Link>
-        <div className="flex justify-end grow-1 basis-100">
-          <Link href={"#"} passHref>
-            <SignupLink type="success">SignUp</SignupLink>
-          </Link>
-          <Link href={"#"} passHref>
-            <LoginButton>Login</LoginButton>
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const Home: NextPage = () => {
   const [winReady, setwinReady] = useState(false);
@@ -68,7 +39,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Page.Bar>
-        <Navbar />
+        <TopBar />
       </Page.Bar>
       <Page.Content>
         {winReady && data ? <Board data={data} /> : null}

@@ -65,7 +65,7 @@ const CardLabel = styled("span", {
   },
 });
 
-const CardLabelText = styled("span", {
+export const CardLabelText = styled("span", {
   fontSize: "$1",
 });
 

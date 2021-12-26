@@ -11,7 +11,6 @@ import {
   CardTitle,
   CardLabelText,
 } from "./card";
-import { Color, Task } from "pages/api/tasks";
 
 const BoardMain = styled("div", {
   flexGrow: 1,
